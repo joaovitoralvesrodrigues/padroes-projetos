@@ -24,7 +24,32 @@ O programa deve apenas permitir que seja mudado o algoritmo de cálculo do desco
 == Responda
 
 1. Qual padrão de projeto pode ser utilizado no desenvolvimento de uma solução? 
+O padrão ideal é o Strategy (Estratégia).
+
+Ele é indicado quando você tem diversos algoritmos para realizar uma tarefa (no caso, calcular descontos) e quer que o objeto original (a Venda) permaneça independente de qual algoritmo foi escolhido. Isso permite trocar a estratégia de cálculo em tempo de execução.
 2. Como poderíamos implementar estes tipos de desconto sem utilizar Padrões de Projetos? 
+Sem o Strategy, o cálculo provavelmente seria feito dentro da classe Venda usando uma estrutura de switch-case ou múltiplos if-else.
+
+Exemplo conceitual:
+
+public double calcularDesconto(int tipoDesconto) {
+    if (tipoDesconto == 1) { // Fixo
+        return valorTotal * 0.10; 
+    } else if (tipoDesconto == 2) { // Progressivo
+        double d = valorTotal / 25.0;
+        return d > 20 ? valorTotal * 0.20 : d;
+    } else if (tipoDesconto == 3) { // Aniversário
+        // Lógica de data aqui...
+    }
+    return 0;
+}
+
 3. Quais os problemas que tal implementação traria?
+
+Violação do Princípio do Aberto/Fechado (OCP): Toda vez que uma nova promoção surgir, você terá que abrir a classe Venda e modificar o código existente, correndo o risco de quebrar o que já funciona.
+
+Dificuldade de Manutenção: A classe Venda assume responsabilidades que não são dela (cálculo de regras de negócio complexas), tornando-se uma "Classe Deus".
+
+Baixa Reutilização: Você não consegue isolar um cálculo de desconto para testá-lo individualmente (testes unitários) sem instanciar toda a lógica da venda.
 4. Implemente o projeto e envie o link para repositório no GitHub, onde o README deve conter as respostas.
 
